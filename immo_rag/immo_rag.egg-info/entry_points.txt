@@ -1,0 +1,2 @@
+[console_scripts]
+ingest = immo_rag.ingest:create_vector_store
