@@ -1,3 +1,5 @@
 /data/
 /immo_agentic_rag/
 embedding_comparateur.ipynb
+/immo_chroma_db/
+ingest_immo_chroma_db.ipynb
