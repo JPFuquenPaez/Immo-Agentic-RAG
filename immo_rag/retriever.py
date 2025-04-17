@@ -1,4 +1,4 @@
-from langchain_chroma import Chroma 
+from langchain.vectorstores import Chroma
 from langchain.embeddings import SentenceTransformerEmbeddings
 from immo_rag.config import settings
 
@@ -13,7 +13,8 @@ class VectorStore:
             collection_name="immo_collection",
             collection_metadata={
                 "hnsw:space": "l2",
-                "_type": "CollectionConfig"
+                "_type": "CollectionConfig",  # Explicit type declaration
+                "description": "Real estate listing data"
             }
         )
 
