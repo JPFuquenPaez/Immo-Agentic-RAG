@@ -1,15 +1,15 @@
 from immo_rag.data_loader import load_documents
 from immo_rag.retriever import VectorStore
 from immo_rag.config import settings
+from langchain_chroma import Chroma 
 
 def create_vector_store():
     docs = load_documents()
     
     # Explicit collection creation
-    vector_store = VectorStore()
-    vector_store.vectorstore.from_documents(
+    Chroma.from_documents(
         documents=docs,
-        embedding=vector_store.embeddings,
+        embedding=VectorStore().embeddings,
         persist_directory=settings.PERSIST_DIR,
         collection_name="immo_collection",
         collection_metadata={
