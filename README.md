@@ -1,131 +1,143 @@
 # ImmoRAG: Real Estate Assistant
 
-ImmoRAG is a sophisticated real estate assistant application designed to help users query and retrieve information about real estate properties using natural language processing and vector search capabilities. This project leverages advanced AI models and simple RAG to provide accurate and fast responses to user queries.
+![Python Version](https://img.s://img.shields.io/badge/licensemg.moRAG is a sophisticated real estate assistant that leverages Retrieval Augmented Generation (RAG) to provide accurate property information through natural language queries. Built with LangGraph and Chroma vector database, this application combines semantic search capabilities with generative AI to deliver contextually relevant responses about real estate listings.
 
-Agent RAG is an approach that combines the power of retrieval systems with generative AI models to provide accurate and contextually relevant responses to user queries. This methodology is particularly useful in applications like ImmoRAG, where users need precise information retrieval augmented by natural language understanding.
-
-## Key Components
-
-### Retrieval System
-
-- **Vector Store:** Utilizes embeddings to convert textual data into high-dimensional vectors, enabling efficient similarity searches. In ImmoRAG, the vector store is managed by ChromaDB, which stores and retrieves property information based on semantic similarity.
-- **Embeddings:** Generated using models like SentenceTransformers, these embeddings capture the semantic meaning of text, allowing for accurate retrieval of relevant documents.
-
-### Generative AI Model
-
-- **Language Model (LLM):** A generative model that understands and generates human-like text. In ImmoRAG, the LLM is used to interpret user queries and generate responses based on the retrieved information.
-- **Integration:** The LLM is integrated with the retrieval system to augment its responses with factual data, ensuring that the generated text is both coherent and accurate.
-
-### Agent Framework
-
-- **State Management:** The agent maintains a state that includes user inputs, retrieved documents, and generated responses. This state management allows for contextual conversations where the agent can refer back to previous interactions.
-- **Tools and Actions:** The agent can perform various actions, such as querying the vector store or generating text, based on the user's input. These actions are defined as tools within the agent framework.
-
-## Workflow
-
-### User Query
-
-The user inputs a query in natural language, such as "Find apartments larger than 61 m2 in Lyon centre."
-
-### Query Interpretation
-
-The LLM interprets the query to understand the user's intent and extracts relevant keywords or phrases.
-
-### Document Retrieval
-
-The retrieval system uses the interpreted query to search the vector store for the most semantically similar documents. These documents contain information about real estate properties.
-
-### Response Generation
-
-The LLM generates a coherent and contextually relevant response based on the retrieved documents. This response is augmented with factual data to ensure accuracy.
-
-### User Interaction
-
-The generated response is presented to the user through the Streamlit interface, allowing for further interaction and refinement of queries.
-
-## Benefits
-
-- **Accuracy:** By combining retrieval and generation, Agent RAG ensures that the responses are not only coherent but also factually accurate, based on the retrieved documents.
-- **Contextual Understanding:** The agent can maintain context across multiple interactions, allowing for more natural and meaningful conversations.
-- **Scalability:** The modular design of the agent framework allows for easy integration of new tools and data sources, making the system scalable and adaptable to changing requirements.
-
-
-## Table of Contents
-
+![ImmoRAG Architecture](https://via.placeholder.com/iew](#overview)
+- [How It Works](#how-it-works)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Example Queries](#example-queries)
 - [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
 
+## Overview
+
+ImmoRAG addresses the challenge of finding relevant real estate information by enabling natural language queries against property data. Rather than browsing through hundreds of listings, users can simply ask questions like "Find apartments larger than 61m² in Lyon centre" and receive accurate, contextualized responses.
+
+## How It Works
+
+ImmoRAG implements Agent RAG (Retrieval Augmented Generation), combining document retrieval systems with generative AI:
+
+### Key Components
+
+#### Retrieval System
+- **Vector Store**: Utilizes ChromaDB to store and retrieve property information based on semantic similarity[1].
+- **Embeddings**: Generated using SentenceTransformers (`all-mpnet-base-v2`) to capture semantic meaning of text[1].
+
+#### Generative AI Model
+- **Language Model (LLM)**: Uses Qwen 2.5 (7B parameters) to interpret queries and generate human-like responses[1].
+- **Integration**: LLM augments responses with factual data from retrieved documents.
+
+#### Agent Framework
+- **State Management**: Maintains conversation context using LangGraph's state architecture[1].
+- **Tools and Actions**: Performs vector searches and generates responses based on user inputs.
+
+### Workflow
+
+1. **User Query**: User inputs a natural language question
+2. **Query Interpretation**: LLM extracts intent and key search terms
+3. **Document Retrieval**: Vector store finds semantically similar property listings
+4. **Response Generation**: LLM generates coherent responses based on retrieved documents
+5. **User Interaction**: Results displayed via Streamlit interface
+
 ## Features
 
-- **Natural Language Querying:** Ask questions about real estate properties in natural language.
-- **Semantic Search:** Utilizes vector embeddings for accurate and efficient search results.
-- **Streamlit Interface:** A user-friendly web interface for interacting with the assistant.
-- **Modular Design:** Clean and maintainable codebase with separate modules for data loading, vector storage, and agent management.
+- **Natural Language Querying**: Ask about properties using everyday language
+- **Semantic Search**: Vector embeddings enable concept-based searching beyond keyword matching[1]
+- **Streamlit Interface**: User-friendly web application for interaction
+- **Modular Design**: Clean, maintainable codebase divided into focused components[2]
+- **Contextual Memory**: Maintains conversation history for follow-up questions
+
+## Screenshots
+
+![ImmoRAG Interface](https://via.placeholder.com/800x500?text=Immo interface showing a sample query and response*
 
 ## Installation
 
 ### Prerequisites
 
 - Python 3.10 or higher
-- Virtual environment (recommended)
+- 4GB+ RAM recommended
+- Internet connection (for embedding model downloads)
 
-### Steps
+### Dependencies
 
-1. **Clone the Repository:**
+```
+langchain>=0.1.0
+chromadb>=0.4.18
+sentence-transformers>=2.2.2
+streamlit>=1.28.0
+langgraph>=0.0.15
+pandas>=2.0.0
+```
 
+### Setup Steps
+
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/yourusername/immoRAG.git
    cd immoRAG
    ```
 
-2. **Create and Activate a Virtual Environment:**
-
+2. **Create and Activate a Virtual Environment**:
    ```bash
    python -m venv immo_agentic_rag
-   source immo_agentic_rag/bin/activate  # On Windows use `immo_agentic_rag\Scripts\activate`
+   source immo_agentic_rag/bin/activate  # On Windows use: immo_agentic_rag\Scripts\activate
    ```
 
-3. **Install Dependencies:**
-
+3. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set Up the Vector Store:**
-
-   Run the ingestion script to create the vector store from your data:
-
+4. **Set Up the Vector Store**:
    ```bash
    python -m immo_rag.ingest
    ```
+   This creates a vector database from your property data using ChromaDB[1].
 
 ## Usage
 
 ### Running the Streamlit App
 
-1. **Activate the Virtual Environment:**
-
+1. **Activate the Virtual Environment** (if not already active):
    ```bash
-   source immo_agentic_rag/bin/activate  # On Windows use `immo_agentic_rag\Scripts\activate`
+   source immo_agentic_rag/bin/activate
    ```
 
-2. **Start the Streamlit App:**
-
+2. **Start the Streamlit App**:
    ```bash
    streamlit run immo_rag/streamlit_app.py
    ```
 
-3. **Interact with the Assistant:**
+3. **Access the Web Interface**:
+   Open your browser and navigate to http://localhost:8501
 
-   Open your web browser and navigate to `http://localhost:8501` to interact with the real estate assistant. Enter your queries in natural language to retrieve property information.
+### Using the Assistant
+
+1. Type your real estate query in the chat input
+2. The assistant will retrieve relevant property listings
+3. Results include property details and similarity scores
+4. Continue the conversation with follow-up questions
+
+## Example Queries
+
+Here are some sample queries you can try:
+
+```
+"Show me apartments in Lyon with more than 2 bedrooms"
+"What's the average price for properties near Paris city center?"
+"Find properties with a DPE rating of A or B"
+"Are there any apartments with a terrace in Marseille?"
+```
 
 ## Project Structure
 
-```plaintext
+```
 immoRAG/
 ├── immo_rag/
 │   ├── __init__.py
@@ -142,16 +154,44 @@ immoRAG/
 └── data/                   # Directory for data files
 ```
 
+The codebase follows modular programming principles to enhance maintainability and collaboration[2]:
+
+- **config.py**: Central configuration settings
+- **data_loader.py**: Handles CSV data processing and document conversion
+- **retriever.py**: Manages vector embeddings and semantic search
+- **tools.py**: Defines custom tools for the agent framework
+- **agent.py**: Implements LangGraph state management
+- **streamlit_app.py**: Web interface implementation
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: Vector store creation fails
+- **Solution**: Ensure your CSV data is properly formatted and accessible in the data directory
+
+**Issue**: LLM fails to load
+- **Solution**: Check that you have Ollama installed and the Qwen2.5 model is available
+
+**Issue**: Module not found errors
+- **Solution**: Verify your virtual environment is activated and all dependencies are installed
+
+**Issue**: Slow response times
+- **Solution**: Consider reducing the vector database size or optimizing embedding parameters
+
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes and commit them (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a new Pull Request.
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-branch`)
+3. Make your changes and commit them (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature-branch`)
+5. Create a new Pull Request
+
+Please ensure your code follows the project's style and includes appropriate tests.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
