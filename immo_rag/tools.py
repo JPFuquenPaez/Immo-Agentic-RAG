@@ -7,25 +7,23 @@ class ImmobilierTools:
         self.retriever = VectorStore()
         
     def info_retriever(self, query: str) -> str:
-        """Retrieve real estate information with similarity scores"""
-        results = self.retriever.semantic_search(query)
+        """Retrieve real estate info with proper formatting"""
+        results = self.retriever.semantic_search(query, k=5)
         
         if not results:
             return "Aucun résultat trouvé"
         
         return "\n\n".join(
+            f"### Annonce {i+1}\n"
             f"{doc.page_content}\n"
-            f"🔗 Lien: {doc.metadata.get('Lien annonce', 'N/A')}\n"
-            f"Score: {score:.2f}\n" 
-            for doc, score in results
-        ) 
+            f"Lien: [🔗 Voir l'annonce]({doc.metadata['Lien annonce']})" 
+            for i, (doc, score) in enumerate(results)
+        )
 
     @property
     def tools(self):
-        return Tool(
-            name="immo_info_retriever",
+        return Tool.from_function(
+            name="immo_search",
             func=self.info_retriever,
-            description="Recherche d'annonces immobilières avec liens directs. "
-                    "Utiliser pour les questions sur les logements, prix, "
-                    "localisations, et caractéristiques. Inclut toujours les URLs des annonces."
+            description="Recherche d'annonces immobilières. Renvoie toujours les liens au format [🔗 Voir l'annonce](URL)"
         )

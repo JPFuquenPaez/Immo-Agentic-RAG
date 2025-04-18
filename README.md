@@ -1,8 +1,7 @@
-# ImmoRAG: Real Estate Assistant
+# ImmoRAG: Real Estate Assistant (Work in progress ;) ...)
 
-![Python Version](https://img.s://img.shields.io/badge/licensemg.moRAG is a sophisticated real estate assistant that leverages Retrieval Augmented Generation (RAG) to provide accurate property information through natural language queries. Built with LangGraph and Chroma vector database, this application combines semantic search capabilities with generative AI to deliver contextually relevant responses about real estate listings.
+ImmoRAG is a real estate assistant that leverages Agentic Retrieval Augmented Generation (RAG) to provide accurate property information through natural language queries. Built with LangGraph and Chroma vector database, this application combines semantic search capabilities with generative AI to deliver contextually relevant responses about real estate listings.
 
-![ImmoRAG Architecture](https://via.placeholder.com/iew](#overview)
 - [How It Works](#how-it-works)
 - [Features](#features)
 - [Screenshots](#screenshots)
