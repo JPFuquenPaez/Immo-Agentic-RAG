@@ -1,53 +1,34 @@
+#ingest.py
 from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma #updated
 from immo_rag.data_loader import load_documents
 from immo_rag.retriever import VectorStore
 from immo_rag.config import settings
+from langchain.embeddings import SentenceTransformerEmbeddings
+import sys
+from pathlib import Path
+
+# Add project root to Python path
+sys.path.append(str(Path(__file__).parent.parent))
 
 def create_vector_store():
-    vector_store = VectorStore()
+    # Clear existing collection first
+    Chroma(persist_directory=settings.PERSIST_DIR, 
+          embedding_function=SentenceTransformerEmbeddings(
+              model_name=settings.EMBEDDING_MODEL
+          )).delete_collection()
     
-    # Recreate collection with proper schema
+    # Create fresh collection
     Chroma.from_documents(
         documents=load_documents(),
-        embedding=vector_store.embeddings,
+        embedding=SentenceTransformerEmbeddings(
+            model_name=settings.EMBEDDING_MODEL
+        ),
         persist_directory=settings.PERSIST_DIR,
         collection_name="immo_collection",
-        collection_metadata={
-            "hnsw:space": "l2",
-            "_type": "CollectionConfig"
-        }
+        collection_metadata={"hnsw:space": "l2"}
     )
     print("Vector store created with explicit schema!")
-    
+
 if __name__ == "__main__":
     create_vector_store()
-    
-"""
-# ingest.py - Modified cleanup section only
-from pathlib import Path
-import shutil
-from immo_rag.retriever import VectorStore
-from immo_rag.data_loader import load_documents
-from config import settings
-
-def create_vector_store():
-# Replace the client reset with filesystem cleanup
-persist_path = Path(settings.PERSIST_DIR)
-if persist_path.exists():
-shutil.rmtree(persist_path)
-print("🧹 Removed existing vector store data")
-
-# Keep existing Chroma initialization
-vector_store = VectorStore()
-Chroma.from_documents(
-documents=load_documents(),
-embedding=vector_store.embeddings,
-persist_directory=settings.PERSIST_DIR,
-collection_name="immo_collection"
-)
-print("✅ New vector store created successfully!")
-
-if __name__ == "__main__":
-create_vector_store()
-
-"""

@@ -1,3 +1,4 @@
+# tools.py
 from langchain.tools import Tool
 from .retriever import VectorStore
 
@@ -14,7 +15,7 @@ class ImmobilierTools:
         return "\n\n".join(
             f"{doc.page_content}\nSimilarity Score (L2 Distance): {score:.2f}"
             for doc, score in results
-        )
+        ) if results else "No results found"
 
     @property
     def tools(self):

@@ -1,3 +1,4 @@
+# agent.py
 from typing import TypedDict, Annotated, List
 from langgraph.graph import StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -7,6 +8,7 @@ from immo_rag.config import settings
 from immo_rag.tools import ImmobilierTools
 from langgraph.graph.message import add_messages
 from langgraph.graph import StateGraph, END
+
 
 class AgentManager:
     def __init__(self):
@@ -34,7 +36,7 @@ class AgentManager:
         builder.add_conditional_edges(
             "assistant",
             tools_condition,
-            {"tools": "tools", "end": END}
+            {"tools": "tools", END: END}
         )
         builder.add_edge("tools", "assistant")
         

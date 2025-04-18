@@ -1,3 +1,4 @@
+# data_loader.py
 import pandas as pd
 from langchain.docstore.document import Document
 from immo_rag.config import settings
@@ -7,11 +8,13 @@ def load_documents():
     df = pd.read_csv(settings.DATA_PATH)
     return [_row_to_document(row) for _, row in df.iterrows()]
 
+
 def _row_to_document(row):
-    """Convert a DataFrame row to LangChain Document"""
+    """Convert a DataFrame row to LangChain Document (WITH ID)"""
     return Document(
-        page_content="\n".join(
-            [f"{col}: {val}" for col, val in row.items() if col != "ID"]
-        ),
+        page_content="\n".join([
+            f"ID: {row['ID']}",  # Explicitly include ID first
+            *[f"{col}: {val}" for col, val in row.items() if col != "ID"]
+        ]),
         metadata={"ID": row["ID"]}
     )

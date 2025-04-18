@@ -1,7 +1,12 @@
+# streamlit_app.py
 import streamlit as st
 from langchain_core.messages import HumanMessage
 import sys
 from pathlib import Path
+# streamlit_app.py - Add this at the top before other imports
+import sys
+import torch
+sys.modules['torch._classes'] = None
 
 # Add project root to Python path
 sys.path.append(str(Path(__file__).parent.parent))
