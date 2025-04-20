@@ -13,6 +13,21 @@ ImmoRAG is a real estate assistant that leverages Agentic Retrieval Augmented Ge
 - [Contributing](#contributing)
 - [License](#license)
 
+# ImmoRAG: Real Estate Assistant (Work in progress ;) ...)
+
+ImmoRAG is a real estate assistant that leverages Agentic Retrieval Augmented Generation (RAG) to provide accurate property information through natural language queries. Built with LangGraph and Chroma vector database, this application combines semantic search capabilities with generative AI to deliver contextually relevant responses about real estate listings.
+
+- [How It Works](#how-it-works)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Example Queries](#example-queries)
+- [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Overview
 
 ImmoRAG addresses the challenge of finding relevant real estate information by enabling natural language queries against property data. Rather than browsing through hundreds of listings, users can simply ask questions like "Find apartments larger than 61m² in Lyon centre" and receive accurate, contextualized responses.

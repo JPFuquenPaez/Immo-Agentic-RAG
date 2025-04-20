@@ -1,18 +1,12 @@
 import streamlit as st
-from langchain_core.messages import HumanMessage
+import uuid
 import sys
-from pathlib import Path
-import torch
 
-# Ajouter le répertoire racine du projet au chemin Python
-sys.path.append(str(Path(__file__).parent.parent))
+# Append the parent directory of 'immo_rag' to sys.path
+sys.path.append('/Users/juanpablofuquenpaez/immoRAG')
 
-# Importer les paramètres et AgentManager depuis immo_rag
-from immo_rag.config import settings
+# Now import the module
 from immo_rag.agent import AgentManager
-
-# Solution de contournement pour un éventuel problème d'importation de torch._classes
-sys.modules['torch._classes'] = None
 
 def main():
     st.set_page_config(
@@ -20,55 +14,60 @@ def main():
         page_icon="🏠",
         layout="centered"
     )
-    
-    # Initialiser l'agent
+
+    # Gestion des sessions utilisateur
+    if "session_id" not in st.session_state:
+        st.session_state.session_id = str(uuid.uuid4())
+
     if "agent" not in st.session_state:
         st.session_state.agent = AgentManager()
 
-    # Historique de la conversation
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    st.title("🏠 Assistant Immobilier Expert")
 
-    # Initialiser la mémoire
-    if "memory" not in st.session_state:
-        st.session_state.memory = []
+    # Affichage de l'historique
+    for msg in st.session_state.get("messages", []):
+        st.chat_message(msg["role"]).markdown(msg["content"])
 
-    st.title("🏠 Assistant Immobilier")
-    
-    # Afficher les messages de la conversation
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # Entrée utilisateur
-    if prompt := st.chat_input("Posez vos questions sur les biens immobiliers..."):
-        # Ajouter le message de l'utilisateur à l'historique de la conversation
+    if prompt := st.chat_input("Posez votre question immobilière..."):
+        # Ajout du message utilisateur
+        st.session_state.messages = st.session_state.get("messages", [])
         st.session_state.messages.append({"role": "user", "content": prompt})
 
-        # Afficher le message de l'utilisateur
         with st.chat_message("user"):
             st.markdown(prompt)
 
-            # Obtenir la réponse de l'agent
-        with st.spinner("Analyse en cours..."):
-            try:
-                response = st.session_state.agent.run_query(prompt)
+        try:
+            with st.spinner("Recherche en cours..."):
+                response = st.session_state.agent.run_query(
+                    prompt,
+                    st.session_state.session_id
+                )
+
                 ai_content = response["messages"][-1].content
-                
-                # Nettoyage HTML
                 ai_content = ai_content.replace("🔗", "🔗 ").replace("http", " http")
-                
+
                 st.session_state.messages.append({
                     "role": "assistant",
                     "content": ai_content
                 })
-                
+
                 with st.chat_message("assistant"):
-                    st.markdown(ai_content, unsafe_allow_html=True)
-                    
-            except Exception as e:
-                st.error(f"ERREUR CRITIQUE : {str(e)}")
-                st.stop()
+                    st.markdown(ai_content)
+
+            # Debug
+            with st.expander("Détails techniques"):
+                st.json({
+                    "session_id": st.session_state.session_id,
+                    "retrieved_count": response["context"].get("retrieved_count"),
+                    "last_query_hash": response["context"].get("query_hash")
+                })
+
+        except Exception as e:
+            st.error(f"Erreur : {str(e)}")
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": f"Erreur système : {str(e)}"
+            })
 
 if __name__ == "__main__":
     main()

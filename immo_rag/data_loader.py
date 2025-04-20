@@ -9,27 +9,26 @@ def load_documents():
     return [_row_to_document(row) for _, row in df.iterrows()]
 
 # alternatively: f"ID: {row['ID']}",  # Explicitly include ID first *[f"{col}: {val}" for col, val in row.items() if col != "ID"]   
+# data_loader.py (version corrigée)
 def _row_to_document(row):
-    """Convertir une ligne du DataFrame en Document avec mise en forme explicite"""
+    """Conversion complète de toutes les colonnes CSV"""
     return Document(
-        page_content="\n".join([
-            f"ID: {row['ID']}",
-            f"Titre: {row['Titre']}",
-            f"Prix: {row['Prix']}€",
-            f"Localisation: {row['Localisation']}",
-            f"Surface: {row['Surface']}m²", 
-            f"Pièces: {row['Pièces']}",
-            f"Chambres: {row['Chambres']}",
-            f"DPE: {row['DPE']}",
-            f"Description: {row['Description']}",
-            f"lien: {row['lien']}",
-            f"Caracteristiques: {row['Caracteristiques']}"
-        ]),
-        metadata={
-            "lien": str(row["lien"]),
-            "prix": row["Prix"],
-            "surface": row["Surface"],
-            "localisation": row["Localisation"]
-            }
+        page_content=(
+            f"ID: {row['ID']}\n"
+            f"Titre: {row['Titre']}\n"
+            f"Prix: {row['Prix']}€\n"
+            f"Localisation: {row['Localisation']}\n"
+            f"Surface: {row['Surface']}m²\n"
+            f"Pièces: {row['Pièces']}\n"
+            f"Chambres: {row['Chambres']}\n"
+            f"DPE: {row['DPE']}\n"
+            f"Description: {row['Description'][:200]}...\n"  # Truncate long text
+            f"Date publication: {row['Date de publication']}\n"
+            f"Agence: {row['Agence']}\n"
+            f"Caractéristiques: {row['Caracteristiques']}\n"
+            f"Lien: {row['lien']}\n"
+            f"Source: {row['Lien page source']}"
+        ),
+        metadata= dict(row.items())
     )
     

@@ -6,7 +6,7 @@ class Settings:
     PERSIST_DIR = "./immo_chroma_db"
     EMBEDDING_MODEL = "all-mpnet-base-v2"
     LLM_MODEL = "qwen2.5:7b"
-    LLM_TEMPERATURE = 0.1
-    MAX_TOKENS = 512
+    LLM_TEMPERATURE = 0.4
+    MAX_TOKENS = 2024
 
 settings = Settings()

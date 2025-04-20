@@ -13,5 +13,5 @@ class VectorStore:
             embedding_function=self.embeddings,
             collection_name="immo_collection")
 
-    def semantic_search(self, query: str, k: int = 5) -> list:
+    def semantic_search(self, query: str, k: int) -> list:
         return self.vectorstore.similarity_search_with_score(query, k=k)
